@@ -41,3 +41,8 @@ git checkout --theirs branch-name -- media/catalog/product/cache
 
 // file will not be affected 
 git update-index --assume-unchanged file-name
+
+//rename branch
+git branch -m <oldname> <newname>
+//rename current branch
+git branch -m <newname>
