@@ -50,6 +50,5 @@ git branch -m <newname>
 // get list of conflict files
 git diff --name-only --diff-filter=U
 
-// Configure Git to Only Push Current Branch
-git push origin HEAD
+
 
