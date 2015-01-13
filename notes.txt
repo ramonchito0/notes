@@ -53,3 +53,6 @@ git diff --name-only --diff-filter=U
 // Configure Git to Only Push Current Branch
 git push origin HEAD
 
+// determine the remote url that a local git repo
+git config --get remote.origin.url
+git remote show origin
