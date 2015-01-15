@@ -12,8 +12,16 @@ git reset --hard 8b331ad4e093472e4d4a89ad815edadf92f706cc
 // git-checkout specific files from another branch
 git checkout branch-name -- filename
 
-//this will work on local
+//get branch from remote and create automatically
+//this works in my local
 git checkout --track origin/branch_name
+
+// delete a local branch
+git branch -D <local branch>
+
+// delete a remote branch
+git push origin :<remote branch>
+
 
 //get branch from repo and create branch automatically
 git fetch
@@ -56,3 +64,26 @@ git push origin HEAD
 // determine the remote url that a local git repo
 git config --get remote.origin.url
 git remote show origin
+
+// Unstaging a Staged File
+// to determine the state of those two areas also reminds you how to undo changes to them.
+git reset HEAD <file>
+
+// to discard changes in working directory
+git checkout -- <file>
+
+// shows you where the branch pointers are pointing
+git log --oneline --decorate
+
+//it will print out the history of your commits, showing where your branch pointers are and how your history has diverged.
+git log --oneline --decorate --graph --all
+
+// see the last commit on each branch
+git branch -v
+
+// see which branches are already merged into the branch you’re on
+git branch --merged
+
+// see all the branches that contain work you haven’t yet merged in
+git branch --no-merged
+
