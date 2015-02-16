@@ -92,3 +92,7 @@ git remote add origin https://github.com/user/repo.git
 
 // Verify new remote
 git remote -v
+
+
+// Listing globally installed NPM packages and version
+npm list -g --depth=0
