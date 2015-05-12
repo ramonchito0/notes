@@ -92,3 +92,29 @@ git remote add origin https://github.com/user/repo.git
 
 // Verify new remote
 git remote -v
+
+
+## EXTRACTING ZIP FILES ##
+// extract to a particular directory
+unzip zipfile.zip -d folder
+// extract to current directory
+unzip zipfile.zip
+
+// extract tar file current directory
+tar -xvf tarfile.tar
+// extract tar file particular directory
+tar -C /directory -xvf tarfile.tar
+
+// extract single file 
+tar -xvf file.tar foo.txt
+tar -xzvf file.tar.gz foo.txt
+tar -xjvf file.tar.bz2 foo.txt
+
+// fetch from the default remote, origin
+git fetch
+// reset your current branch (master) to origin's master
+git reset --hard origin/master
+
+
+
+
