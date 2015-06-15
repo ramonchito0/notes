@@ -44,10 +44,10 @@ git pull origin master
 git checkout --ours media/catalog/product/cache
 git checkout --theirs media/catalog/product/cache
 
-// add files/file from their branch 
+// add files/file from their branch
 git checkout --theirs branch-name -- media/catalog/product/cache
 
-// file will not be affected 
+// file will not be affected
 git update-index --assume-unchanged file-name
 
 //rename branch
@@ -105,7 +105,7 @@ tar -xvf tarfile.tar
 // extract tar file particular directory
 tar -C /directory -xvf tarfile.tar
 
-// extract single file 
+// extract single file
 tar -xvf file.tar foo.txt
 tar -xzvf file.tar.gz foo.txt
 tar -xjvf file.tar.bz2 foo.txt
@@ -115,6 +115,5 @@ git fetch
 // reset your current branch (master) to origin's master
 git reset --hard origin/master
 
-
-
-
+// deletes all your untracked directories/files and can't be undone.
+git clean -f -d
