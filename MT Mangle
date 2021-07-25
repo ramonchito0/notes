@@ -1,0 +1,110 @@
+/ip firewall layer7-protocol
+add name=L7-Youtube regexp="^..+\\.(youtube.com|googlevideo.com|akamaihd.net|v\
+    ideoplayback|video).*\$"
+add name=L7-Netflix regexp=\
+    "^.+(netflix|nflxext|nflximg|nflxsearch|nflxso|nflxvideo).*\$"
+/ip firewall filter
+add action=passthrough chain=unused-hs-chain comment=\
+    "place hotspot rules here" disabled=yes
+/ip firewall mangle
+add action=mark-connection chain=prerouting comment="mobile legends" \
+    dst-port=\
+    7000,8913,10003,30000-30150,5001-5059,5101-5105,9001,5501-5559,5601-5651 \
+    new-connection-mark="mobile legends" passthrough=yes protocol=tcp
+add action=mark-connection chain=prerouting dst-port=\
+    7000,8913,10003,30000-30150,5001-5059,5101-5105,9001,5501-5559,5601-5651 \
+    new-connection-mark="mobile legends" passthrough=yes protocol=udp
+add action=mark-packet chain=prerouting connection-mark="mobile legends" \
+    new-packet-mark=ml-pkt passthrough=no
+add action=mark-connection chain=prerouting comment="cross fire" dst-port=\
+    16666,10008-10009,13006-13008 new-connection-mark="cross fire" \
+    passthrough=yes protocol=tcp
+add action=mark-connection chain=prerouting dst-port=12000-12080,13000-13080 \
+    new-connection-mark="cross fire" passthrough=yes protocol=udp
+add action=mark-packet chain=prerouting connection-mark="cross fire" \
+    new-packet-mark=crossfire-pkt passthrough=no
+add action=mark-connection chain=prerouting comment="rules of survival" \
+    dst-port=5501-5599,9080,24000-24050 new-connection-mark=ROS passthrough=\
+    yes protocol=udp
+add action=mark-connection chain=prerouting dst-port=9000-9999 \
+    new-connection-mark=ROS passthrough=yes protocol=tcp
+add action=mark-packet chain=prerouting connection-mark=ROS new-packet-mark=\
+    ros-pkt passthrough=no
+add action=mark-connection chain=prerouting comment=dota2 dst-port=\
+    27015,27036,27037,27017,25903 new-connection-mark=dota2 passthrough=yes \
+    protocol=tcp
+add action=mark-connection chain=prerouting dst-port=\
+    4380,4379,3478,27000-28999,27001,27099 new-connection-mark=dota2 \
+    passthrough=yes protocol=udp
+add action=mark-packet chain=prerouting connection-mark=dota2 \
+    new-packet-mark=dota2-pkt passthrough=no
+add action=mark-connection chain=prerouting comment="league of legends " \
+    dst-port=2099,8088,8393-8400,5222-5227 new-connection-mark=LOL \
+    passthrough=yes protocol=tcp
+add action=mark-connection chain=prerouting dst-port=\
+    5000-5500,19900,1513,42354 new-connection-mark=LOL passthrough=yes \
+    protocol=udp
+add action=mark-packet chain=prerouting connection-mark=LOL new-packet-mark=\
+    lol-pkt passthrough=no
+add action=mark-connection chain=prerouting comment="call of duty" dst-port=\
+    3013,18082,65010,65050 new-connection-mark="call of duty" passthrough=yes \
+    protocol=tcp
+add action=mark-connection chain=prerouting dst-port=7500-7650 \
+    new-connection-mark="call of duty" passthrough=yes protocol=udp
+add action=mark-packet chain=prerouting connection-mark="call of duty" \
+    new-packet-mark=cod-pkt passthrough=no
+add action=mark-connection chain=prerouting comment="pubg mobile" dst-port=\
+    10012,17500 new-connection-mark="pubg mobile" passthrough=yes protocol=\
+    tcp
+add action=mark-connection chain=prerouting dst-port="10010,10013,10039,10096,\
+    10491,10612,11455,12235,13748,13894,13972,20000-20002" \
+    new-connection-mark="pubg mobile" passthrough=yes protocol=udp
+add action=mark-packet chain=prerouting connection-mark="pubg mobile" \
+    new-packet-mark=pubg-pkt passthrough=no
+add action=mark-connection chain=prerouting comment=Roblox connection-bytes=\
+    0-64000 dst-port=49152-65535 new-connection-mark=roblox_conn passthrough=\
+    yes protocol=udp
+add action=mark-packet chain=prerouting connection-mark=roblox_conn \
+    new-packet-mark=roblox-pkt passthrough=no
+add action=mark-connection chain=prerouting comment=netflix layer7-protocol=\
+    L7-Netflix new-connection-mark=nextflix_conn passthrough=yes
+add action=mark-packet chain=prerouting connection-mark=nextflix_conn \
+    new-packet-mark=netflix-pkt passthrough=no
+add action=mark-connection chain=prerouting comment=youtube layer7-protocol=\
+    L7-Youtube new-connection-mark=youtube_conn passthrough=yes
+add action=mark-packet chain=prerouting connection-mark=youtube_conn \
+    new-packet-mark=youtube-pkt passthrough=no
+add action=mark-connection chain=prerouting comment=streaming dst-port=443 \
+    new-connection-mark=streaming passthrough=yes protocol=udp
+add action=mark-packet chain=prerouting connection-mark=streaming \
+    new-packet-mark="streaming -pkt" passthrough=no
+add action=mark-connection chain=prerouting comment=downloading \
+    connection-bytes=512000-0 dst-port=80,8080,443 new-connection-mark=\
+    downloading passthrough=yes protocol=tcp
+add action=mark-connection chain=prerouting connection-bytes=512000-0 \
+    dst-port=80,8080 new-connection-mark=downloading passthrough=yes \
+    protocol=udp
+add action=mark-packet chain=prerouting connection-mark=downloading \
+    new-packet-mark=dload-pkt passthrough=no
+add action=mark-connection chain=prerouting comment=browsing dst-port=\
+    80,8080,443 new-connection-mark=browsing passthrough=yes protocol=tcp
+add action=mark-connection chain=prerouting dst-port=80,8080 \
+    new-connection-mark=browsing passthrough=yes protocol=udp
+add action=mark-packet chain=prerouting connection-mark=browsing \
+    new-packet-mark=browsing-pkt passthrough=no
+add action=mark-connection chain=prerouting comment=others connection-bytes=\
+    0-64000 new-connection-mark=others passthrough=yes protocol=tcp
+add action=mark-connection chain=prerouting connection-bytes=0-64000 \
+    new-connection-mark=others passthrough=yes protocol=udp
+add action=mark-packet chain=prerouting connection-mark=others \
+    new-packet-mark=others-pkt passthrough=no
+add action=mark-packet chain=forward comment=ping new-packet-mark=ping-pkt \
+    passthrough=no protocol=icmp
+/ip firewall nat
+add action=passthrough chain=unused-hs-chain comment=\
+    "place hotspot rules here" disabled=yes
+add action=masquerade chain=srcnat out-interface=ether1-ISP
+add action=masquerade chain=srcnat comment="masquerade hotspot network" \
+    src-address=192.168.10.0/24
+add action=masquerade chain=srcnat comment="masquerade hotspot network" \
+    src-address=192.168.10.0/24
