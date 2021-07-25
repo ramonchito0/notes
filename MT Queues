@@ -1,0 +1,79 @@
+/queue simple
+add max-limit=4M/13M name=LAN target=ether2-LAN
+add max-limit=0/3M name="1 - SERVER" parent=LAN target=\
+    192.168.2.200/32,192.168.3.253/32
+/queue tree
+add max-limit=13M name=DOWNstream parent=global
+add max-limit=3M name=UPstream parent=ether1-ISP
+add max-limit=12M name=MEDIAstream parent=DOWNstream
+add max-limit=2M name="MEDIAstream UP" parent=UPstream
+add name=ping packet-mark=ping-pkt parent=DOWNstream priority=1
+/queue type
+add kind=pcq name=PCQ pcq-classifier=dst-address pcq-dst-address-mask=24 \
+    pcq-dst-address6-mask=64 pcq-limit=16KiB pcq-src-address-mask=24 \
+    pcq-src-address6-mask=64 pcq-total-limit=640KiB
+add kind=pcq name=PCQ-STREAMING pcq-classifier=dst-address \
+    pcq-dst-address-mask=24 pcq-dst-address6-mask=64 pcq-limit=16KiB \
+    pcq-rate=420k pcq-src-address-mask=24 pcq-src-address6-mask=64 \
+    pcq-total-limit=640KiB
+add kind=pcq name=PCQ-2M pcq-classifier=dst-address pcq-dst-address-mask=24 \
+    pcq-dst-address6-mask=64 pcq-limit=16KiB pcq-rate=2M \
+    pcq-src-address-mask=24 pcq-src-address6-mask=64 pcq-total-limit=640KiB
+add kind=pcq name=PCQ-3M pcq-classifier=dst-address pcq-dst-address-mask=24 \
+    pcq-dst-address6-mask=64 pcq-limit=16KiB pcq-rate=3M \
+    pcq-src-address-mask=24 pcq-src-address6-mask=64 pcq-total-limit=640KiB
+add kind=pcq name=PQC-YOUTUBE-DESKTOP pcq-classifier=dst-address \
+    pcq-dst-address-mask=24 pcq-dst-address6-mask=64 pcq-limit=16KiB \
+    pcq-rate=144k pcq-src-address-mask=24 pcq-src-address6-mask=64 \
+    pcq-total-limit=640KiB
+/queue tree
+add name="mobile legends" packet-mark=ml-pkt parent=DOWNstream priority=1 \
+    queue=pcq-download-default
+add name="cross fire" packet-mark=crossfire-pkt parent=DOWNstream priority=1 \
+    queue=pcq-download-default
+add name="rules of survival" packet-mark=ros-pkt parent=DOWNstream priority=1 \
+    queue=pcq-download-default
+add name=dota2 packet-mark=dota2-pkt parent=DOWNstream priority=1 queue=\
+    pcq-download-default
+add name="league of legends " packet-mark=lol-pkt parent=DOWNstream priority=\
+    1 queue=pcq-download-default
+add name="call of duty" packet-mark=cod-pkt parent=DOWNstream priority=1 \
+    queue=pcq-download-default
+add name="pubg mobile" packet-mark=pubg-pkt parent=DOWNstream priority=1 \
+    queue=pcq-download-default
+add name="ccall of duty" packet-mark=cod-pkt parent=UPstream priority=1 \
+    queue=pcq-upload-default
+add name="ccross fire" packet-mark=crossfire-pkt parent=UPstream priority=1 \
+    queue=pcq-upload-default
+add name=ddota2 packet-mark=dota2-pkt parent=UPstream priority=1 queue=\
+    pcq-upload-default
+add name="lleague of legends " packet-mark=lol-pkt parent=UPstream priority=1 \
+    queue=pcq-upload-default
+add name="mmobile legends" packet-mark=ml-pkt parent=UPstream priority=1 \
+    queue=pcq-upload-default
+add name="ppubg mobile" packet-mark=pubg-pkt parent=UPstream priority=1 \
+    queue=pcq-upload-default
+add name="rrules of survival" packet-mark=ros-pkt parent=UPstream priority=1 \
+    queue=pcq-upload-default
+add max-limit=6M name=streaming packet-mark="streaming -pkt" parent=\
+    MEDIAstream priority=6 queue=PCQ-STREAMING
+add max-limit=3M name=downloading packet-mark=dload-pkt parent=MEDIAstream \
+    queue=pcq-download-default
+add max-limit=6M name=browsing packet-mark=browsing-pkt parent=MEDIAstream \
+    queue=pcq-download-default
+add max-limit=6M name=others packet-mark=others-pkt parent=MEDIAstream queue=\
+    pcq-download-default
+add max-limit=1M name=bbrowsing packet-mark=browsing-pkt parent=\
+    "MEDIAstream UP" queue=pcq-upload-default
+add max-limit=1M name=ddownloading packet-mark=dload-pkt parent=\
+    "MEDIAstream UP" queue=pcq-upload-default
+add max-limit=1M name=oothers packet-mark=others-pkt parent="MEDIAstream UP" \
+    queue=pcq-upload-default
+add max-limit=1M name=sstreaming packet-mark="streaming -pkt" parent=\
+    "MEDIAstream UP" queue=pcq-upload-default
+add max-limit=3M name=youtube packet-mark=youtube-pkt parent=streaming queue=\
+    PQC-YOUTUBE-DESKTOP
+add max-limit=3M name=Netflix packet-mark=netflix-pkt parent=streaming queue=\
+    pcq-download-default
+add name=roblox packet-mark=roblox-pkt parent=DOWNstream priority=1 queue=\
+    pcq-download-default
